@@ -3,7 +3,7 @@ import datetime
 from flask_login import UserMixin
 
 
-# DATABASE = SqliteDatabase('dogs.sqlite')
+DATABASE = SqliteDatabase('projects.sqlite')
 
 class Project(Model):
     title = CharField(max_length=150)
@@ -11,20 +11,28 @@ class Project(Model):
     budget_allotment = DecimalField(max_digits=12, decimal_places=2, null=True)
     time_allotment_hours = DecimalField(max_digits=10, decimal_places=2, null=True)
     project_end_date = DateField(null=True)
-    created_at = DateTimeField(auto_now_add=True)
-    last_update = DateTimeField(auto_now=True)
-
-class TimeSheet(Model):
-    project_name = CharField(max_length=150)
-    project_description = TextField(null=True)
-    billable = BooleanField()
-    hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
-    workday_start = DateTimeField()
-    workday_end = DateTimeField()
+    created_at = DateTimeField(default=datetime.datetime.now)
+    last_update = DateTimeField(default=datetime.datetime.now)
+    class Meta:
+        database = DATABASE
 
 class User(Model):
     user = CharField(max_length=32)
     email = CharField(max_length=32, unique=True)
+    class Meta:
+        database = DATABASE
+
+class TimeSheet(Model):
+    project_name = CharField(max_length=150)
+    project_description = TextField(null=True)
+    billable = BooleanField(default=False)
+    hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
+    workday_start = DateTimeField()
+    workday_end = DateTimeField()
+    user = ForeignKeyField(User)
+    class Meta:
+        database = DATABASE
+    
 
 class UserProjectCategorizations(Model):
     user = ForeignKeyField(User)
@@ -32,3 +40,17 @@ class UserProjectCategorizations(Model):
 
     class Meta:
         primary_key = CompositeKey('user', 'project')
+        database = DATABASE
+
+
+def initialize():
+    DATABASE.connect()
+    # open a connection to our database
+    DATABASE.create_tables([Project, User, TimeSheet, UserProjectCategorizations], safe=True)
+    # the safe keyword argument means don't create the table
+    # if it already exists
+    # don't forget to add your models to this when you add them :)
+    print('TABLES CREATED')
+    DATABASE.close()
+    # note in SQL we generally want to explicitly open a connection
+    # and then close it when we're done
