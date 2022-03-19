@@ -12,6 +12,61 @@ from flask_login import login_required, current_user
 project = Blueprint('projects', __name__)
 
 
+
+
+@project.post('/')
+# @login_required
+def create_project():
+    payload = request.get_json()
+    # print(payload)
+    # return ("look at your terminal")
+
+
+    created_project = models.Project.create(**payload)
+    project_dict = model_to_dict(created_project)
+      
+    return jsonify(
+        data=project_dict,
+        message='Project created!',
+        status=201
+    ), 201
+
 @project.get('/')
-def test_users():
-    return 'project blueprint works'
+def project_index():
+    # to get everything from a table
+    # kinda SQL, we can call .select on our model
+    all_projects = models.Project.select()
+    proj_dicts = [model_to_dict(proj) for proj in all_projects]
+    # for project_dict in project_dicts:
+        # del project_dict['owner']['password']
+
+    return jsonify(
+        data=proj_dicts,
+        message=f'Fetched {len(proj_dicts)} Projects!',
+        status=200
+    ), 200   
+
+@project.get('/<id>')
+def show_project(id):
+    try:
+        # try to run the code
+        # we'll tell you what to do if it fails
+        # peewee has a built in get_by_id method
+        project_to_show = models.Project.get_by_id(id)
+        project_dict = model_to_dict(project_to_show)
+        # del project_dict['owner']['password']   
+        return jsonify(
+            data=project_dict,
+            message='project successfully fetched!',
+            status=200
+        ), 200
+    except models.DoesNotExist:
+        # except is kind of like catch in JavaScript
+        # it provides error handling for our code
+        return jsonify(
+            data={},
+            message='Invalid project ID',
+            status=400
+        ), 400
+
+    

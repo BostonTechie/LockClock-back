@@ -10,7 +10,7 @@ class Project(Model):
     description = TextField(null=True)
     budget_allotment = DecimalField(max_digits=12, decimal_places=2, null=True)
     time_allotment_hours = DecimalField(max_digits=10, decimal_places=2, null=True)
-    project_end_date = DateField(null=True)
+    project_end_date = DateField(formats=['%Y-%m-%d'], null=True)
     created_at = DateTimeField(default=datetime.datetime.now)
     last_update = DateTimeField(default=datetime.datetime.now)
     class Meta:
