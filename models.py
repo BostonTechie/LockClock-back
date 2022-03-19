@@ -16,9 +16,10 @@ class Project(Model):
     class Meta:
         database = DATABASE
 
-class User(Model):
-    user = CharField(max_length=32)
+class User(UserMixin, Model):
     email = CharField(max_length=32, unique=True)
+    password = CharField()
+
     class Meta:
         database = DATABASE
 

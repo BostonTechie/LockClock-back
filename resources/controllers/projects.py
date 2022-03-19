@@ -26,9 +26,9 @@ def create_project():
     ), 201
 
 @project.get('/')
+@login_required
 def project_index():
-    # to get everything from a table
-    # kinda SQL, we can call .select on our model
+
     all_projects = models.Project.select()
     proj_dicts = [model_to_dict(proj) for proj in all_projects]
     # for project_dict in project_dicts:
@@ -41,11 +41,10 @@ def project_index():
     ), 200   
 
 @project.get('/<id>')
+@login_required
 def show_project(id):
     try:
-        # try to run the code
-        # we'll tell you what to do if it fails
-        # peewee has a built in get_by_id method
+    
         project_to_show = models.Project.get_by_id(id)
         project_dict = model_to_dict(project_to_show)
         # del project_dict['owner']['password']   
@@ -55,8 +54,8 @@ def show_project(id):
             status=200
         ), 200
     except models.DoesNotExist:
-        # except is kind of like catch in JavaScript
-        # it provides error handling for our code
+      
+        # provides error handling for our code
         return jsonify(
             data={},
             message='Invalid project ID',

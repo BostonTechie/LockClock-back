@@ -11,12 +11,27 @@ from resources.controllers.projects import project
 
 
 DEBUG = True
-PORT = 8000
+PORT = 8000 
 
 app = Flask(__name__)
+ 
+load_dotenv()
 
 SESSION_SECRET = os.getenv('SESSION_SECRET')
 app.secret_key = SESSION_SECRET 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.unauthorized_handler
+def handle_unauthorized():
+    # this will send back json when we make an unauthorized request
+    # the default is html
+    return jsonify(
+        data={},
+        status=401,
+        message='You must be logged in to do that'
+    ), 401
 
 
 app.register_blueprint(user, url_prefix='/api/v1/users')
@@ -25,6 +40,15 @@ app.register_blueprint(project, url_prefix='/api/v1/projects')
 
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(project, origins=['http://localhost:3000'], supports_credentials=True)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        return models.User.get_by_id(user_id)
+    except models.DoesNotExist:
+        return None
+    
 
 @app.before_request
 def before_request():
@@ -72,7 +96,7 @@ def test_route():
     return 'App is working'
 
 if __name__ == '__main__':
-
+    
     models.initialize()
     app.run(
         port=PORT,
