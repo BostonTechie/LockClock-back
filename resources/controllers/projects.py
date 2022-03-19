@@ -13,9 +13,11 @@ project = Blueprint('projects', __name__)
 
 
 @project.post('/')
-# @login_required
-def create_project():
+@login_required
+def create_project(id):
     payload = request.get_json()
+    payload['email_id'] = current_user.id
+
     created_project = models.Project.create(**payload)
     project_dict = model_to_dict(created_project)
       

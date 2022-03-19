@@ -12,6 +12,8 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
+
+
 class Project(Model):
     title = CharField(max_length=150)
     description = TextField(null=True)
@@ -20,7 +22,7 @@ class Project(Model):
     project_end_date = DateField(formats=['%Y-%m-%d'], null=True)
     created_at = DateTimeField(default=datetime.datetime.now)
     last_update = DateTimeField(default=datetime.datetime.now)
-    # master_user = ForeignKeyField(User)
+    email_id = ForeignKeyField(User,backref='project_id')
     class Meta:
         database = DATABASE
 
@@ -32,17 +34,16 @@ class TimeSheet(Model):
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
     workday_start = DateTimeField()
     workday_end = DateTimeField()
-    user = ForeignKeyField(User)
     class Meta:
         database = DATABASE
     
 
 class UserProjectCategorizations(Model):
-    user = ForeignKeyField(User)
+    email = ForeignKeyField(User)
     project = ForeignKeyField(Project)
 
     class Meta:
-        primary_key = CompositeKey('user', 'project')
+        primary_key = CompositeKey('email', 'project')
         database = DATABASE
 
 
