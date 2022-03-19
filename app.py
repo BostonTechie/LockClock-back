@@ -7,6 +7,7 @@ import os
 import models
 # import my various controllers where my routes are
 from resources.controllers.users import user
+from resources.controllers.projects import project
 
 
 DEBUG = True
@@ -19,6 +20,7 @@ app.secret_key = SESSION_SECRET
 
 
 app.register_blueprint(user, url_prefix='/api/v1/users')
+app.register_blueprint(project, url_prefix='/api/v1/projects')
 
 
 @app.before_request
