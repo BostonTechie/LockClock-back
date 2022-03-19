@@ -4,6 +4,13 @@ from flask_login import UserMixin
 
 
 DATABASE = SqliteDatabase('projects.sqlite')
+  
+class User(UserMixin, Model):
+    email = CharField(max_length=32, unique=True)
+    password = CharField()
+
+    class Meta:
+        database = DATABASE
 
 class Project(Model):
     title = CharField(max_length=150)
@@ -13,15 +20,10 @@ class Project(Model):
     project_end_date = DateField(formats=['%Y-%m-%d'], null=True)
     created_at = DateTimeField(default=datetime.datetime.now)
     last_update = DateTimeField(default=datetime.datetime.now)
+    # master_user = ForeignKeyField(User)
     class Meta:
         database = DATABASE
 
-class User(UserMixin, Model):
-    email = CharField(max_length=32, unique=True)
-    password = CharField()
-
-    class Meta:
-        database = DATABASE
 
 class TimeSheet(Model):
     project_name = CharField(max_length=150)
