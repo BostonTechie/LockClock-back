@@ -12,16 +12,10 @@ from flask_login import login_required, current_user
 project = Blueprint('projects', __name__)
 
 
-
-
 @project.post('/')
 # @login_required
 def create_project():
     payload = request.get_json()
-    # print(payload)
-    # return ("look at your terminal")
-
-
     created_project = models.Project.create(**payload)
     project_dict = model_to_dict(created_project)
       

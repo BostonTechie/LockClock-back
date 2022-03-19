@@ -23,6 +23,9 @@ app.register_blueprint(user, url_prefix='/api/v1/users')
 app.register_blueprint(project, url_prefix='/api/v1/projects')
 
 
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(project, origins=['http://localhost:3000'], supports_credentials=True)
+
 @app.before_request
 def before_request():
     '''Connect to the database before each request.'''
@@ -35,9 +38,33 @@ def after_request(response):
     g.db.close()
     return response
 
-# let's set up some error handlers to send back JSON
-# when something goes wrong
+
 # the app object has an errorhandler decorator
+
+@app.errorhandler(404)
+def handle_404(err):
+    return jsonify(
+        data={},
+        message='404: Resource not found',
+        status=404
+    ), 404
+
+@app.errorhandler(405)
+def handle_405(err):
+    return jsonify(
+        data={},
+        message='405: Method not allowed',
+        status=405
+    ), 405
+
+@app.errorhandler(500)
+def handle_500(err):
+    return jsonify(
+        data={},
+        message='500: Internal server error',
+        status=500
+    ), 500
+
 
 
 @app.get('/')
