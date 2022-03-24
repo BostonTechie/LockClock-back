@@ -3,7 +3,7 @@ from playhouse.shortcuts import model_to_dict
 # just as a note playhouse came from installing peewee
 # we use model_to_dict to translate our models into dictionaries
 import models
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user,  logout_user
 
 # login_required is a function decorator
 # that specify that certain routes can only be hit if we have a valid login

@@ -34,12 +34,6 @@ def handle_unauthorized():
     ), 401
 
 
-app.register_blueprint(user, url_prefix='/api/v1/users')
-app.register_blueprint(project, url_prefix='/api/v1/projects')
-
-
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(project, origins=['http://localhost:3000'], supports_credentials=True)
 
 
 @login_manager.user_loader
@@ -49,6 +43,14 @@ def load_user(user_id):
     except models.DoesNotExist:
         return None
     
+
+app.register_blueprint(user, url_prefix='/api/v1/users')
+app.register_blueprint(project, url_prefix='/api/v1/projects')
+
+
+CORS(user, origins=['http://localhost:3000/*'], supports_credentials=True)
+CORS(project, origins=['http://localhost:3000/*'], supports_credentials=True)
+CORS(app, origins=['http://localhost:3000/*'], supports_credentials=True)    
 
 @app.before_request
 def before_request():
