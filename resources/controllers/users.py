@@ -16,7 +16,7 @@ def register():
     # let's start by making sure we can get our payload
     # from our request
     payload = request.get_json()
-    # print(payload)
+    print(payload)
     # return 'Look at your terminal'
     # let's only create a new user if this email hasn't been used
     try:
