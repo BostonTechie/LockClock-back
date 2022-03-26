@@ -89,13 +89,13 @@ def register():
 #         # some say you should vague like this
 #         # others disagree
 
-# @user.get('/logout')
-# def logout():
-#     logout_user()
-#     return jsonify(
-#         status=200,
-#         message='Successfully logged out'
-#     ), 200
+@user.get('/logout')
+def logout():
+    logout_user()
+    return jsonify(
+        status=200,
+        message='Successfully logged out'
+    ), 200
 
 # @user.get('/<id>/dogs')
 # def get_users_dogs(id):
