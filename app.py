@@ -2,14 +2,21 @@ from flask import Blueprint, request, Flask, g, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_cors import CORS
 from flask_login import login_user, logout_user
+from resources.users import user
 
 import models
 
 DEBUG = True
 PORT = 8000
 
+
+
 app = Flask(__name__)
+
+app.register_blueprint(user, url_prefix='/api/v1/users/')
+
 CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 
 @app.get('/')
 def test_route():
