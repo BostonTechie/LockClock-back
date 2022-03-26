@@ -42,13 +42,11 @@ def register():
         ), 401
     except models.DoesNotExist:
         print(payload)
-        # return "Look at terminal"
+    
         created_user = models.User.create(**payload)
        
         user_dict = model_to_dict(created_user)
-        # let's delete the password before we send it back
-        # it throws an error because it's not serializable
-        # and we don't want to send it back anyways
+       
   
         return jsonify(
             data=user_dict,
