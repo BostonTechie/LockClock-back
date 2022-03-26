@@ -33,8 +33,6 @@ def handle_unauthorized():
         message='You must be logged in to do that'
     ), 401
 
-
-# this actually connects our login manager to our app
 @login_manager.user_loader
 def load_user(user_id):
     # the user_loader expects to get an id for a user

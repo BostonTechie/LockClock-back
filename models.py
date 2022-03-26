@@ -1,9 +1,9 @@
 from peewee import *
-
+from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('work.sqlite')
 
-class User(Model):
+class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField()
     class Meta:
