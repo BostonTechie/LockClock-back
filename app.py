@@ -1,26 +1,49 @@
 from flask import Blueprint, request, Flask, g, jsonify
-from playhouse.shortcuts import model_to_dict
+from flask_login import LoginManager
 from flask_cors import CORS
-from flask_login import login_user, logout_user
+
 from dotenv import load_dotenv
 import os
-import models
 
+import models
 
 #insert the controllers the have the routes here
 from resources.users import user
 
 
-
+# set up environmental variables
 DEBUG = True
 PORT = 8000
-
-
-
 app = Flask(__name__)
 load_dotenv()
 SESSION_SECRET = os.getenv('SESSION_SECRET')
 app.secret_key = SESSION_SECRET
+
+#handler for unauthorized requests
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.unauthorized_handler
+def handle_unauthorized():
+    # this will send back json when we make an unauthorized request
+    # the default is html
+    return jsonify(
+        data={},
+        status=401,
+        message='You must be logged in to do that'
+    ), 401
+
+
+# this actually connects our login manager to our app
+@login_manager.user_loader
+def load_user(user_id):
+    # the user_loader expects to get an id for a user
+    # and it expects us to return a user if it exists
+    # and None if it does not exist
+    try:
+        return models.User.get_by_id(user_id)
+    except models.DoesNotExist:
+        return None
 
 
 
@@ -29,51 +52,10 @@ app.register_blueprint(user, url_prefix='/api/v1/users/')
 CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 
-@app.get('/')
-def test_route():
-    return 'App is working'
 
-@app.get('/get')
-def get_route():
-    all_users = models.User.select()
-    user_dicts = [model_to_dict(user) for user in all_users]
-    
-    return jsonify(
-    data= user_dicts,
-    message=f'Fetched {len(user_dicts)} users!',
-    status=200
-    ), 200
-
-@app.post('/register')
-def register():
-
-    payload = request.get_json()
-    print(payload)
-
-    try:
-        models.User.get(models.User.email == payload['email'])
-        # in Peewee we can use .get() to retrieve a single record
-        return jsonify(
-            data={},
-            status=401,
-            message='A user with that email already exists'
-        ), 401
-    except models.DoesNotExist:
-        print(payload)
-    
-        created_user = models.User.create(**payload)
-       
-        user_dict = model_to_dict(created_user)
-       
-  
-        return jsonify(
-            data=user_dict,
-            message='Successfully registered',
-            status=201
-        ), 201
 
 if __name__ == '__main__':
-    print('Session Secret:', SESSION_SECRET)
+ 
     # we need to initialize our database here
     models.initialize()
     app.run(
