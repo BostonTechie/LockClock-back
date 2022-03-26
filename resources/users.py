@@ -19,12 +19,10 @@ def get_route():
 
 @user.post('/register')
 def register():
-    # let's start by making sure we can get our payload
-    # from our request
+
     payload = request.get_json()
-    # print(payload)
-    # return 'Look at your terminal'
-    # let's only create a new user if this email hasn't been used
+    print(payload)
+
     try:
         models.User.get(models.User.email == payload['email'])
         # in Peewee we can use .get() to retrieve a single record
@@ -34,17 +32,13 @@ def register():
             message='A user with that email already exists'
         ), 401
     except models.DoesNotExist:
-        hashed_password = generate_password_hash(payload['password'])
-        payload['password'] = hashed_password
-        # print(payload)
-        # return "Look at terminal"
+        print(payload)
+    
         created_user = models.User.create(**payload)
-        login_user(created_user)
+       
         user_dict = model_to_dict(created_user)
-        # let's delete the password before we send it back
-        # it throws an error because it's not serializable
-        # and we don't want to send it back anyways
-        del user_dict['password']
+       
+  
         return jsonify(
             data=user_dict,
             message='Successfully registered',
