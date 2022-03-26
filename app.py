@@ -2,9 +2,15 @@ from flask import Blueprint, request, Flask, g, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_cors import CORS
 from flask_login import login_user, logout_user
+from dotenv import load_dotenv
+import os
+import models
+
+
+#insert the controllers the have the routes here
 from resources.users import user
 
-import models
+
 
 DEBUG = True
 PORT = 8000
@@ -12,6 +18,11 @@ PORT = 8000
 
 
 app = Flask(__name__)
+load_dotenv()
+SESSION_SECRET = os.getenv('SESSION_SECRET')
+app.secret_key = SESSION_SECRET
+
+
 
 app.register_blueprint(user, url_prefix='/api/v1/users/')
 
@@ -62,10 +73,11 @@ def register():
         ), 201
 
 if __name__ == '__main__':
-    # print('Session Secret:', SESSION_SECRET)
+    print('Session Secret:', SESSION_SECRET)
     # we need to initialize our database here
     models.initialize()
     app.run(
         port=PORT,
         debug=DEBUG
+        
     )
