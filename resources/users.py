@@ -46,48 +46,46 @@ def register():
             status=201
         ), 201
 
-# @user.post('/login')
-# def login():
-#     payload = request.get_json()
-#     try:
-#         user_to_login = models.User.get(models.User.email == payload['email'])
-#         # now we need to check if the password is correct
-#         user_dict = model_to_dict(user_to_login)
-#         # print(user_dict)
-#         # return 'look at terminal'
-#         # now we can check if our passwords match with check_password_hash
-#         valid_password = check_password_hash(user_dict['password'], payload['password'])
-#         # this will return true if the passwords match
-#         # and false if they do not
-#         if valid_password:
-#             # log the user in if the passwords match
-#             del user_dict['password']
-#             # delete the password
-#             # remember we can't send back anyway
-#             login_user(user_to_login)
-#             # log in user
-#             return jsonify(
-#                 data=user_dict,
-#                 message='User logged in',
-#                 status=200
-#             ), 200
-#         else:
-#             # if the passwords don't match
-#             # send back a vague error
-#             return jsonify(
-#                 data={},
-#                 status=401,
-#                 message='Email or password is incorrect'
-#             ), 401
-#     except models.DoesNotExist:
-#         # send back a response if we get an invalid email
-#         return jsonify(
-#             data={},
-#             status=401,
-#             message='Email or password is incorrect'
-#         ), 401
-#         # some say you should vague like this
-#         # others disagree
+@user.post('/login')
+def login():
+    payload = request.get_json()
+    try:
+        user_to_login = models.User.get(models.User.email == payload['email'])
+        # now we need to check if the password is correct
+        user_dict = model_to_dict(user_to_login)
+   
+        # now we can check if our passwords match with check_password_hash
+        valid_password = check_password_hash(user_dict['password'], payload['password'])
+        # this will return true if the passwords match
+        # and false if they do not
+        if valid_password:
+            # log the user in if the passwords match
+            del user_dict['password']
+            # delete the password
+            
+            login_user(user_to_login)
+            # log in user
+            return jsonify(
+                data=user_dict,
+                message='User logged in',
+                status=200
+            ), 200
+        else:
+            # if the passwords don't match
+            # send back a vague error
+            return jsonify(
+                data={},
+                status=401,
+                message='Email or password is incorrect'
+            ), 401
+    except models.DoesNotExist:
+        # send back a response if we get an invalid email
+        return jsonify(
+            data={},
+            status=401,
+            message='Email or password is incorrect'
+        ), 401
+
 
 @user.get('/logout')
 def logout():
