@@ -95,40 +95,21 @@ def logout():
         message='Successfully logged out'
     ), 200
 
-# @user.get('/<id>/dogs')
-# def get_users_dogs(id):
-#     try:
-#         # get all dogs that a particular user owns
-#         # first way:
-#         # dog_user = models.User.get_by_id(id)
-#         # dog_dicts = [model_to_dict(dog) for dog in dog_user.dogs]
-#         # for dog_dict in dog_dicts:
-#         #     del dog_dict['owner']
-#         # return jsonify(
-#         #     data=dog_dicts,
-#         #     message=f'Fetched {len(dog_dicts)} dogs',
-#         #     status=200
-#         # ), 200
-#         # second way
-#         dogs = (models.Dog
-#             .select(
-#                 models.Dog.id,
-#                 models.Dog.name,
-#                 models.Dog.breed,
-#                 models.Dog.age,
-#                 models.Dog.created_at
-#             )
-#             .where(models.Dog.owner == id)
-#             .dicts())
-#         dogs = list(dogs)
-#         return jsonify(
-#             data=dogs,
-#             message=f'Fetched {len(dogs)} dogs',
-#             status=200
-#         ), 200
-#     except models.DoesNotExist:
-#         return jsonify(
-#             data=[],
-#             message='Invalid user ID',
-#             status=400
-#         ), 400
+@user.get('/<id>')
+def get_users(id):
+    try:
+        user_to_show = models.User.get_by_id(id)
+        user_dict = model_to_dict(user_to_show)
+      
+        return jsonify(
+            data=user_dict,
+            message=f'Fetched {len(user_dict)} users',
+            status=200
+        ), 200
+     
+    except models.DoesNotExist:
+        return jsonify(
+            data=[],
+            message='Invalid user ID',
+            status=400
+        ), 400
