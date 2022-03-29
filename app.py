@@ -50,10 +50,13 @@ app.register_blueprint(user, url_prefix='/api/v1/users/')
 CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(user, origins=['http://localhost:3000/'], supports_credentials=True)
 
-
+# heroku deployment
+if 'ON_HEROKU' in os.environ:
+    print('\non Heroku')
+    models.initialize()
 
 if __name__ == '__main__':
- 
+    
     # we need to initialize our database here
     models.initialize()
     app.run(
