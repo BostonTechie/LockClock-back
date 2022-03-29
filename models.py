@@ -6,6 +6,8 @@ DATABASE = SqliteDatabase('work.sqlite')
 class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField()
+    token = CharField()
+
     class Meta:
         database = DATABASE
 

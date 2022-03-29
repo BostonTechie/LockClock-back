@@ -3,6 +3,8 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
 from flask_login import login_user, logout_user, login_required
 import models
+import random
+
 
 user = Blueprint('users', __name__)
 
@@ -37,7 +39,7 @@ def register():
         
         hashed_password = generate_password_hash(payload['password']) 
         payload['password'] = hashed_password
-        payload['token'] = 'test123'
+        payload['token'] = random.randint(1,10000000)
         created_user = models.User.create(**payload)
         login_user(created_user)
         user_dict = model_to_dict(created_user)
