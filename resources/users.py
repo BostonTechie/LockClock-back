@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required,current_user
 import models
 import random
 
@@ -102,7 +102,6 @@ def logout():
 
 # show route
 @user.get('/<id>')
-@login_required
 def get_users(id):
     try:
         user_to_show = models.User.get_by_id(id)
