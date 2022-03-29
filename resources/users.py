@@ -6,6 +6,8 @@ import models
 
 user = Blueprint('users', __name__)
 
+
+
 @user.get('/')
 def get_route():
     all_users = models.User.select()
@@ -35,11 +37,12 @@ def register():
         
         hashed_password = generate_password_hash(payload['password']) 
         payload['password'] = hashed_password
+        payload['token'] = 'test123'
         created_user = models.User.create(**payload)
         login_user(created_user)
         user_dict = model_to_dict(created_user)
         del user_dict['password']
-    
+        print(payload)
         return jsonify(
             data=user_dict,
             message='Successfully registered',
