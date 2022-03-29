@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 import models
 
 user = Blueprint('users', __name__)
@@ -86,7 +86,7 @@ def login():
             message='Email or password is incorrect'
         ), 401
 
-
+# logout route
 @user.get('/logout')
 def logout():
     logout_user()
@@ -95,7 +95,9 @@ def logout():
         message='Successfully logged out'
     ), 200
 
+# show route
 @user.get('/<id>')
+@login_required
 def get_users(id):
     try:
         user_to_show = models.User.get_by_id(id)
@@ -113,3 +115,5 @@ def get_users(id):
             message='Invalid user ID',
             status=400
         ), 400
+
+# edit route
