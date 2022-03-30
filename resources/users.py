@@ -102,17 +102,25 @@ def logout():
 
 # show route
 @user.get('/<id>')
+@login_required
 def get_users(id):
     try:
         user_to_show = models.User.get_by_id(id)
-        user_dict = model_to_dict(user_to_show)
-      
-        return jsonify(
-            data=user_dict,
-            message=f'Fetched {len(user_dict)} users',
-            status=200
-        ), 200
-     
+        if user_to_show.id == current_user.id:
+            user_dict = model_to_dict(user_to_show)
+        
+            return jsonify(
+                data=user_dict,
+                message=f'Fetched {len(user_dict)} users',
+                status=200
+            ), 200
+        else:
+            # send back an error if the wrong user is logged in
+            return jsonify(
+                data={},
+                status=403,
+                message='You do not have permission to update that user'
+            ), 403
     except models.DoesNotExist:
         return jsonify(
             data=[],
