@@ -47,8 +47,7 @@ def load_user(user_id):
 
 app.register_blueprint(user, url_prefix='/api/v1/users/')
 
-CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(user, origins=['http://localhost:3000/'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000/', 'react app'], supports_credentials=True)
 
 # heroku deployment
 if 'ON_HEROKU' in os.environ:
