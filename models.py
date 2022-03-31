@@ -1,6 +1,6 @@
 from peewee import *
 from flask_login import UserMixin
-
+import datetime
 
 # for deployment
 import os
@@ -25,6 +25,9 @@ class Timesheet(Model):
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
     workday_start =TimeField()
     workday_end = TimeField()
+    calendar_day = DateField()
+    created_at = DateTimeField(default=datetime.datetime.now)
+    owner = ForeignKeyField(User, backref='timesheets')
 
     class Meta:
         database = DATABASE
@@ -35,4 +38,4 @@ def initialize():
 DATABASE.create_tables([User, Timesheet], safe=True)
 
 print('TABLES CREATED')
-DATABASE.close()        
+DATABASE.close()       

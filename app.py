@@ -9,6 +9,7 @@ import models
 
 #insert the controllers the have the routes here
 from resources.users import user
+from resources.timesheet import timesheet
 
 
 # set up environmental variables
@@ -46,9 +47,11 @@ def load_user(user_id):
 
 
 app.register_blueprint(user, url_prefix='/api/v1/users/')
+app.register_blueprint(timesheet, url_prefix='/api/v1/timesheet/')
 
 CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(user, origins=['http://localhost:3000/'], supports_credentials=True)
+CORS(timesheet, origins=['http://localhost:3000/'], supports_credentials=True)
 
 
 @app.before_request
