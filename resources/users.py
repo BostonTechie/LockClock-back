@@ -39,12 +39,11 @@ def register():
         
         hashed_password = generate_password_hash(payload['password']) 
         payload['password'] = hashed_password
-        payload['token'] = random.randint(1,10000000)
         created_user = models.User.create(**payload)
         login_user(created_user)
         user_dict = model_to_dict(created_user)
         del user_dict['password']
-        print(payload)
+        # print(payload)
         return jsonify(
             data=user_dict,
             message='Successfully registered',
