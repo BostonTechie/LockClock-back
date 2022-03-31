@@ -6,6 +6,10 @@ from flask_login import login_required, current_user
 
 timesheet = Blueprint('timesheets', __name__)
 
+@timesheet.get('/')
+def dog_test():
+    return 'Dog blueprint works'
+
 @timesheet.post('/')
 @login_required
 def create_timesheet():

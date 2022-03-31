@@ -23,9 +23,9 @@ class Timesheet(Model):
     project_description = TextField(null=True)
     billable = BooleanField()
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
-    workday_start =TimeField()
-    workday_end = TimeField()
-    calendar_day = DateField()
+    workday_start =TimeField(default=datetime.datetime.now)
+    workday_end = TimeField(default=datetime.datetime.now)
+    calendar_day = DateField(default=datetime.datetime.now)
     created_at = DateTimeField(default=datetime.datetime.now)
     owner = ForeignKeyField(User, backref='timesheets')
 
