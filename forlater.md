@@ -8,9 +8,14 @@
 
 
 {
-    "title": "proj 1",
-    "description": "proj 1",
-    "budget_allotment": 12345.45,
-    "time_allotment_hours":  12345.45,
-    "project_end_date": "12/31/2025"
-    }
+        "billable": "True",
+        "calendar_day": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "created_at": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "hourly_rate": "42.2",
+        "id": 2,
+        "notes": "proj 1 notes",
+        "project_description": "proj 1 decrip",
+        "project_name": "proj 1 name",
+        "workday_end": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "workday_start": "Thu, 31 Mar 2022 12:09:08 GMT"
+    },
