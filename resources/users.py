@@ -5,10 +5,7 @@ from flask_login import login_user, logout_user, login_required,current_user
 import models
 import random
 
-
 user = Blueprint('users', __name__)
-
-
 
 @user.get('/')
 def get_route():
@@ -25,7 +22,6 @@ def get_route():
 def register():
 
     payload = request.get_json()
-    # print("🌟🌟  here i am 🌟🌟🌟",payload)
 
     try:
         models.User.get(models.User.email == payload['email'])
@@ -110,7 +106,7 @@ def get_users(id):
         
             return jsonify(
                 data=user_dict,
-                message=f'Fetched {len(user_dict)} users',
+                message=f'Fetched {len(user_dict)} pieces of data',
                 status=200
             ), 200
         else:

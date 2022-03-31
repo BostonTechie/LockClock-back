@@ -8,13 +8,10 @@ import os
 from playhouse.db_url import connect
 DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite:///work.sqlite')
 
-
-
 class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField()
     
-
     class Meta:
         database = DATABASE
 

@@ -3,7 +3,6 @@ from playhouse.shortcuts import model_to_dict
 import models
 from flask_login import login_required, current_user
 
-
 timesheet = Blueprint('timesheets', __name__)
 
 @timesheet.get('/')
@@ -13,28 +12,13 @@ def dog_test():
 @timesheet.post('/')
 @login_required
 def create_timesheet():
-    # first I need to get some JSON from my request
-    # import request from flask
+ 
     payload = request.get_json()
-    # print(model_to_dict(current_user))
+
     payload['owner'] = current_user.id
-    # print(payload)
-    # return 'Look at your terminal' 
-    # created_timesheet = models.timesheet.create(
-    #     name=payload['name'],
-    #     age=payload['age'],
-    #     breed=payload['breed']
-    # )
-    # Here's another way to write this
+    
     created_timesheet = models.Timesheet.create(**payload)
-    # this syntax is an "unpacking" syntax
-    # it's similar to destructuring in Javascript
-    # print('Here\'s create_timesheet')
-    # print(created_timesheet)
-    # print("and its type")
-    # print(type(created_timesheet))
-    # print(created_timesheet.__dict__)
-    # print(model_to_dict(created_timesheet))
+    
     timesheet_dict = model_to_dict(created_timesheet)
     del timesheet_dict['owner']['password']
     # remove the owner's password before we send it back
@@ -47,21 +31,12 @@ def create_timesheet():
 
 @timesheet.get('/')
 def timesheet_index():
-    # to get everything from a table
-    # kinda SQL, we can call .select on our model
+
     all_timesheets = models.Timesheet.select()
-    # print(type(all_timesheets))
-    # can we iterate over this?
-    # for timesheet in all_timesheets:
-    #     print(type(timesheet))
-    # we'll make a list of all of our timesheet dictionaries
-    # with a list comprehension
     timesheet_dicts = [model_to_dict(timesheet) for timesheet in all_timesheets]
     for timesheet_dict in timesheet_dicts:
         del timesheet_dict['owner']['password']
-        # delete owner's password on all timesheets
-
-    # print(timesheet_dicts)
+      
     return jsonify(
         data=timesheet_dicts,
         message=f'Fetched {len(timesheet_dicts)} timesheets!',
@@ -71,9 +46,7 @@ def timesheet_index():
 @timesheet.get('/<id>')
 def show_timesheet(id):
     try:
-        # try to run the code
-        # we'll tell you what to do if it fails
-        # peewee has a built in get_by_id method
+        
         timesheet_to_show = models.Timesheet.get_by_id(id)
         timesheet_dict = model_to_dict(timesheet_to_show)
         del timesheet_dict['owner']['password']   
@@ -83,8 +56,7 @@ def show_timesheet(id):
             status=200
         ), 200
     except models.DoesNotExist:
-        # except is kind of like catch in JavaScript
-        # it provides error handling for our code
+      
         return jsonify(
             data={},
             message='Invalid timesheet ID',
@@ -123,7 +95,7 @@ def update_timesheet(id):
                 message='You do not have permission to update that timesheet'
             ), 403
     except models.DoesNotExist:
-        # a nice custom exception
+       
         return jsonify(
             data={},
             status=400,
