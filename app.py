@@ -50,6 +50,21 @@ app.register_blueprint(user, url_prefix='/api/v1/users/')
 CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 CORS(user, origins=['http://localhost:3000/'], supports_credentials=True)
 
+
+@app.before_request
+def before_request():
+    '''Connect to the database before each request.'''
+    g.db = models.DATABASE
+    g.db.connect()
+    # @app.before_request defines a function
+    # that we want to run before EACH request
+
+@app.after_request
+def after_request(response):
+    '''Close the database connection after each request.'''
+    g.db.close()
+    return response
+    
 # heroku deployment
 if 'ON_HEROKU' in os.environ:
     print('\non Heroku')

@@ -23,7 +23,7 @@ class Timesheet(Model):
     project_description = TextField(null=True)
     billable = BooleanField()
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
-    workday_start = TimeField()
+    workday_start =TimeField()
     workday_end = TimeField()
 
     class Meta:
