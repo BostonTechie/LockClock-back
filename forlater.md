@@ -8,12 +8,14 @@
 
 
 {
-    "project_name": "proj 1 name",
-    "notes": "proj 1 notes",
-    "project_description": "proj 1 decrip",
-    "billable": "True",
-    "hourly_rate": 42.2,
-    "workday_start "07:30",
-    "workday_end: "18:30",
-  calendar_day: "2022-01-01"
-}
+        "billable": "True",
+        "calendar_day": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "created_at": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "hourly_rate": "42.2",
+        "id": 2,
+        "notes": "proj 1 notes",
+        "project_description": "proj 1 decrip",
+        "project_name": "proj 1 name",
+        "workday_end": "Thu, 31 Mar 2022 12:09:08 GMT",
+        "workday_start": "Thu, 31 Mar 2022 12:09:08 GMT"
+    },
