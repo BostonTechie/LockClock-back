@@ -65,6 +65,32 @@ def after_request(response):
     g.db.close()
     return response
     
+# when something goes wrong
+# the app object has an errorhandler decorator
+
+@app.errorhandler(404)
+def handle_404(err):
+    return jsonify(
+        data={},
+        message='404: Resource not found',
+        status=404
+    ), 404
+
+@app.errorhandler(405)
+def handle_405(err):
+    return jsonify(
+        data={},
+        message='405: Method not allowed',
+        status=405
+    ), 405
+
+@app.errorhandler(500)
+def handle_500(err):
+    return jsonify(
+        data={},
+        message='500: Internal server error',
+        status=500
+    ), 500
 # heroku deployment
 if 'ON_HEROKU' in os.environ:
     print('\non Heroku')
