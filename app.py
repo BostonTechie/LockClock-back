@@ -44,8 +44,6 @@ def load_user(user_id):
     except models.DoesNotExist:
         return None
 
-
-
 app.register_blueprint(user, url_prefix='/api/v1/users/')
 app.register_blueprint(timesheet, url_prefix='/api/v1/timesheet/')
 
@@ -94,6 +92,7 @@ def handle_500(err):
         message='500: Internal server error',
         status=500
     ), 500
+
 # heroku deployment
 if 'ON_HEROKU' in os.environ:
     print('\non Heroku')
