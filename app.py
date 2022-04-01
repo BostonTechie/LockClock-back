@@ -47,9 +47,9 @@ def load_user(user_id):
 app.register_blueprint(user, url_prefix='/api/v1/users/')
 app.register_blueprint(timesheet, url_prefix='/api/v1/timesheet/')
 
-CORS(app, origins=['https://fuseclockfront3.herokuapp.com'], supports_credentials=True)
-CORS(user, origins=['https://fuseclockfront3.herokuapp.com'], supports_credentials=True)
-CORS(timesheet, origins=['https://fuseclockfront3.herokuapp.com'], supports_credentials=True)
+CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(timesheet, origins=['http://localhost:3000'], supports_credentials=True)
 
 
 @app.before_request
