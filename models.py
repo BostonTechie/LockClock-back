@@ -16,9 +16,10 @@ class User(UserMixin, Model):
         database = DATABASE
 
 class Timesheet(Model):
-    project_name = CharField(max_length=150, default="React")
+   
     notes = CharField(max_length=150)
-    project_description = TextField(null=True)
+    total_bill = DecimalField(max_digits=8, decimal_places=2, null=True)
+    total_time_day = DecimalField(max_digits=8, decimal_places=2, null=True)
     billable = BooleanField(default=False)
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
     workday_start =TimeField(default=datetime.datetime.now)
@@ -31,6 +32,7 @@ class Timesheet(Model):
         database = DATABASE
 
 def initialize():
+    DATABASE.close()   
     DATABASE.connect()
 
 DATABASE.create_tables([User, Timesheet], safe=True)

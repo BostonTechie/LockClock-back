@@ -2,6 +2,7 @@ from flask import Blueprint, request, Flask, g, jsonify
 from flask_login import LoginManager
 from flask_cors import CORS
 
+
 from dotenv import load_dotenv
 import os
 

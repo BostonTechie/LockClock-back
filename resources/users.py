@@ -3,9 +3,22 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from playhouse.shortcuts import model_to_dict
 from flask_login import login_user, logout_user, login_required,current_user
 import models
-import random
+from werkzeug.http import dump_cookie
+
 
 user = Blueprint('users', __name__)
+
+def set_cookie(response, *args, **kwargs):
+    cookie = dump_cookie(*args, **kwargs)
+
+    if 'samesite' in kwargs and kwargs['samesite'] is None:
+        cookie = "{}; {}".format(cookie, b'SameSite=None'.decode('latin1'))
+
+    response.headers.add(
+        'Set-Cookie',
+        cookie
+    )
+
 
 @user.get('/')
 def get_route():
