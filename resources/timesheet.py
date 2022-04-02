@@ -5,9 +5,7 @@ from flask_login import login_required, current_user
 
 timesheet = Blueprint('timesheets', __name__)
 
-@timesheet.get('/')
-def dog_test():
-    return 'Dog blueprint works'
+
 
 @timesheet.post('/')
 # @login_required
@@ -29,9 +27,8 @@ def timesheet_index():
 
     all_timesheets = models.Timesheet.select()
     timesheet_dicts = [model_to_dict(timesheet) for timesheet in all_timesheets]
-    for timesheet_dict in timesheet_dicts:
-        del timesheet_dict['owner']['password']
-      
+ 
+       
     return jsonify(
         data=timesheet_dicts,
         message=f'Fetched {len(timesheet_dicts)} timesheets!',
