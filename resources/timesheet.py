@@ -97,22 +97,12 @@ def update_timesheet(id):
 @timesheet.delete('/<id>')
 # @login_required
 def delete_timesheet(id):
-    try:
-        timesheet_to_delete = models.Timesheet.get_by_id(id)
-        if timesheet_to_delete.owner.id == current_user.id:
-            # we can use delete_instance to delete in Peewee
-            timesheet_to_delete.delete_instance()
-            return jsonify(
-                message='timesheet successfully deleted',
-                status=200
-            ), 200
-        else:
-            return jsonify(
-                message='You are not authorized to delete that timesheet',
-                status=403
-            ), 403
-    except models.DoesNotExist:
-        return jsonify(
-            message='Invalid timesheet ID',
-            status=400
-        ), 400
+  
+    timesheet_to_delete = models.Timesheet.get_by_id(id)
+    timesheet_to_delete.delete_instance()
+    return jsonify(
+        message='timesheet successfully deleted',
+        status=200
+    ), 200
+
+   
