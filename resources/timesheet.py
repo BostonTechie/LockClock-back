@@ -10,17 +10,12 @@ def dog_test():
     return 'Dog blueprint works'
 
 @timesheet.post('/')
-@login_required
+# @login_required
 def create_timesheet():
  
-    payload = request.get_json()
-
-    payload['owner'] = current_user.id
-    
+    payload = request.get_json()  
     created_timesheet = models.Timesheet.create(**payload)
-    
     timesheet_dict = model_to_dict(created_timesheet)
-    del timesheet_dict['owner']['password']
     # remove the owner's password before we send it back
 
     return jsonify(
@@ -64,7 +59,7 @@ def show_timesheet(id):
         ), 400
 
 @timesheet.put('/<id>')
-@login_required
+# @login_required
 def update_timesheet(id):
     try:
         timesheet_to_update = models.Timesheet.get_by_id(id)
@@ -103,7 +98,7 @@ def update_timesheet(id):
         ), 400
 
 @timesheet.delete('/<id>')
-@login_required
+# @login_required
 def delete_timesheet(id):
     try:
         timesheet_to_delete = models.Timesheet.get_by_id(id)

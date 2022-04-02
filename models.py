@@ -26,7 +26,7 @@ class Timesheet(Model):
     workday_end = TimeField(default=datetime.datetime.now)
     calendar_day = DateField(default=datetime.datetime.now)
     created_at = DateTimeField(default=datetime.datetime.now)
-    owner = ForeignKeyField(User, backref='timesheets')
+    
 
     class Meta:
         database = DATABASE
