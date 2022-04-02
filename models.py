@@ -16,14 +16,13 @@ class User(UserMixin, Model):
         database = DATABASE
 
 class Timesheet(Model):
-    project_name = CharField(max_length=150, default="React")
     notes = CharField(max_length=150)
-    project_description = TextField(null=True)
     billable = BooleanField(default=False)
     hourly_rate = DecimalField(max_digits=8, decimal_places=2, null=True)
     workday_start =TimeField(default=datetime.datetime.now)
     workday_end = TimeField(default=datetime.datetime.now)
     calendar_day = DateField(default=datetime.datetime.now)
+    total_bill = DecimalField(max_digits=8, decimal_places=2, null=True)
     created_at = DateTimeField(default=datetime.datetime.now)
     
 
